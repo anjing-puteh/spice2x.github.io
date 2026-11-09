@@ -188,6 +188,7 @@ namespace launcher {
             RawInputTouchAspectRatio,
             TouchRemap,
             TouchRemapGameReg,
+            TouchRemapNormalReg,
             TouchRemapDevice,
             DisableTouchCardInsert,
             spice2x_TouchCardInsert,

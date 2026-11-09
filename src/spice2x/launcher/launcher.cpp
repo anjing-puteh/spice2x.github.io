@@ -2622,6 +2622,7 @@ int main_implementation(int argc, char *argv[]) {
         if (options[launcher::Options::TouchRemap].value_bool()) {
             touchremap::apply(
                     options[launcher::Options::TouchRemapGameReg].value_text(),
+                    options[launcher::Options::TouchRemapNormalReg].value_text(),
                     options[launcher::Options::TouchRemapDevice].value_text());
         }
     }

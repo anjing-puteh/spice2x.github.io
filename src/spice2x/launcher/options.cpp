@@ -1818,7 +1818,9 @@ static const std::vector<OptionDefinition> OPTION_DEFINITIONS = std::invoke([]()
         .name = "touchremap",
         .desc = "Routes touch input from the touch monitor to the main monitor while the game runs, "
                 "same as running \"MultiDigiMon -touch\" and touching the touch monitor while the "
-                "indicator is on the main monitor. The original mapping is restored when the game exits.\n\n"
+                "indicator is on the main monitor. The normal mapping is restored when the game exits. Set "
+                "-touchremapnormalreg to a .reg file to use a specific normal mapping, or leave it empty to "
+                "restore the mapping active at launch.\n\n"
                 "Only active in fullscreen mode; ignored in windowed mode.\n"
                 "Requires running spice as administrator (the touch screen device is restarted).\n"
                 "Requires -touchremapreg to be set.",
@@ -1835,6 +1837,18 @@ static const std::vector<OptionDefinition> OPTION_DEFINITIONS = std::invoke([]()
                 "The mapping is specific to this PC and this touch screen.",
         .type = OptionType::Text,
         .setting_name = "C:\\path\\to\\game.reg",
+        .category = "Touch Parameters",
+        .picker = OptionPickerType::FilePath,
+        .file_extension = "REG",
+    };
+    c[launcher::Options::TouchRemapNormalReg] = {
+        .title = "Touch Monitor Remap - Normal Mapping (.reg)",
+        .name = "touchremapnormalreg",
+        .desc = "Optional path to a .reg file containing the normal touch mapping to restore when the game exits. "
+                "The same file is used for crash recovery on the next Spice launch. Leave empty to automatically "
+                "save and restore the mapping that was active when the game launched.",
+        .type = OptionType::Text,
+        .setting_name = "C:\\path\\to\\normalstate.reg",
         .category = "Touch Parameters",
         .picker = OptionPickerType::FilePath,
         .file_extension = "REG",

@@ -474,7 +474,8 @@ namespace touchremap {
         restore_from_state(dir, true);
     }
 
-    void apply(const std::string &game_reg_path, const std::string &device_override) {
+    void apply(const std::string &game_reg_path, const std::string &normal_reg_path,
+            const std::string &device_override) {
         if (ACTIVE) {
             return;
         }
@@ -493,6 +494,11 @@ namespace touchremap {
         const auto game_reg = s2ws(game_reg_path);
         if (!file_exists(game_reg)) {
             log_warning("touchremap", "game mapping file not found: {}", game_reg_path);
+            return;
+        }
+        const auto normal_reg = normal_reg_path.empty() ? L"" : s2ws(normal_reg_path);
+        if (!normal_reg.empty() && !file_exists(normal_reg)) {
+            log_warning("touchremap", "normal mapping file not found: {}", normal_reg_path);
             return;
         }
 
@@ -516,10 +522,16 @@ namespace touchremap {
         const auto dir = state_dir();
         State state;
         state.device = device;
-        state.had_key = reg_key_exists();
-        if (state.had_key && !reg_export(backup_path(dir))) {
-            log_warning("touchremap", "failed to back up the current touch mapping; touch remap is skipped");
-            return;
+        state.had_key = !normal_reg.empty() || reg_key_exists();
+        if (state.had_key) {
+            const auto backup = backup_path(dir);
+            const bool backed_up = !normal_reg.empty()
+                    ? CopyFileW(normal_reg.c_str(), backup.c_str(), FALSE) != FALSE
+                    : reg_export(backup);
+            if (!backed_up) {
+                log_warning("touchremap", "failed to back up the normal touch mapping; touch remap is skipped");
+                return;
+            }
         }
         if (!write_state(dir, state)) {
             log_warning("touchremap", "failed to write state file in {}; touch remap is skipped", ws2s(dir));
