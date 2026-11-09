@@ -126,6 +126,7 @@
 #include "util/precise_timer.h"
 #include "util/socd_cleaner.h"
 #include "util/sysutils.h"
+#include "util/touchremap.h"
 #include "util/tapeled.h"
 #include "util/time.h"
 #include "util/utils.h"
@@ -2612,6 +2613,18 @@ int main_implementation(int argc, char *argv[]) {
         change_primary_monitor(options[launcher::Options::PrimaryMonitor].value_text());
     }
     update_monitor_on_boot(monitor_orientation, GRAPHICS_FORCE_REFRESH, monitor_resolution);
+
+    // touch monitor remap (fullscreen only)
+    // this has to come after GRAPHICS_WINDOWED is final and before raw input / touch init
+    if (!cfg::CONFIGURATOR_STANDALONE) {
+        // undo a mapping left behind by a previous session that did not shut down cleanly
+        touchremap::recover_pending();
+        if (options[launcher::Options::TouchRemap].value_bool()) {
+            touchremap::apply(
+                    options[launcher::Options::TouchRemapGameReg].value_text(),
+                    options[launcher::Options::TouchRemapDevice].value_text());
+        }
+    }
 
     // initialize raw input
     RI_MGR = std::make_unique<rawinput::RawInputManager>();

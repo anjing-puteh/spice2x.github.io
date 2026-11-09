@@ -1813,6 +1813,44 @@ static const std::vector<OptionDefinition> OPTION_DEFINITIONS = std::invoke([]()
             {"off", ""},
         },
     };
+    c[launcher::Options::TouchRemap] = {
+        .title = "Touch Monitor Remap (Fullscreen Only)",
+        .name = "touchremap",
+        .desc = "Routes touch input from the touch monitor to the main monitor while the game runs, "
+                "same as running \"MultiDigiMon -touch\" and touching the touch monitor while the "
+                "indicator is on the main monitor. The original mapping is restored when the game exits.\n\n"
+                "Only active in fullscreen mode; ignored in windowed mode.\n"
+                "Requires running spice as administrator (the touch screen device is restarted).\n"
+                "Requires -touchremapreg to be set.",
+        .type = OptionType::Bool,
+        .category = "Touch Parameters",
+    };
+    c[launcher::Options::TouchRemapGameReg] = {
+        .title = "Touch Monitor Remap - Game Mapping (.reg)",
+        .name = "touchremapreg",
+        .desc = "Path to a .reg file containing the touch mapping to use while the game runs. "
+                "To create it: run \"MultiDigiMon -touch\" and finish the wizard so the touch monitor "
+                "registers on the main monitor, then run in a command prompt:\n"
+                "reg export \"HKCU\\Software\\Microsoft\\Wisp\\Pen\\Digimon\" game.reg /y\n\n"
+                "The mapping is specific to this PC and this touch screen.",
+        .type = OptionType::Text,
+        .setting_name = "C:\\path\\to\\game.reg",
+        .category = "Touch Parameters",
+        .picker = OptionPickerType::FilePath,
+        .file_extension = "REG",
+    };
+    c[launcher::Options::TouchRemapDevice] = {
+        .title = "Touch Monitor Remap - Touch Screen Device ID",
+        .name = "touchremapdevice",
+        .desc = "Device instance ID of the touch screen to restart, for example "
+                "HID\\VID_2A94&PID_564D&MI_00\\9&2B0BEF74&0&0000 "
+                "(Device Manager > HID-compliant touch screen > Details > Device instance path). "
+                "Leave empty to auto-detect; auto-detect only works if exactly one touch screen is connected. "
+                "If several are found, they are listed in the log.",
+        .type = OptionType::Text,
+        .setting_name = "HID\\VID_xxxx&PID_xxxx&MI_00\\x&xxxxxxxx&0&0000",
+        .category = "Touch Parameters",
+    };
     c[launcher::Options::DisableTouchCardInsert] = {
         .title = "Disable Touch Card Insert (DEPRECATED - use -touchcard instead)",
         .name = "touchnocard",
