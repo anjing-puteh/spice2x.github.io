@@ -11,6 +11,7 @@
 #include "hooks/graphics/backends/d3d11/d3d11_backend.h"
 #include "util/deferlog.h"
 #include "util/logging.h"
+#include "util/touchremap.h"
 
 #include "launcher.h"
 #include "logger.h"
@@ -33,6 +34,9 @@ namespace launcher {
 
         // reset monitor settings
         reset_monitor_on_exit();
+
+        // restore touch mapping (no-op unless touch remap is active); before the logger stops
+        touchremap::restore();
 
         // before shutting down logger, dump any deferred log messages
         deferredlogs::dump_to_logger();
@@ -68,9 +72,10 @@ namespace launcher {
 
     void shutdown(UINT exit_code) {
 
-        // force exit after 1s
-        std::thread force_thread([exit_code] {
-            Sleep(1000);
+        // force exit after 1s (longer while a touch mapping restore is pending)
+        const DWORD force_delay_ms = 1000 + touchremap::restore_budget_ms();
+        std::thread force_thread([exit_code, force_delay_ms] {
+            Sleep(force_delay_ms);
             log_info("launcher", "force shutdown");
             kill(exit_code);
             return nullptr;
@@ -109,9 +114,10 @@ namespace launcher {
 
     void restart() {
 
-        // force restart after 1s
-        std::thread force_thread([] {
-            Sleep(1000);
+        // force restart after 1s (longer while a touch mapping restore is pending)
+        const DWORD force_delay_ms = 1000 + touchremap::restore_budget_ms();
+        std::thread force_thread([force_delay_ms] {
+            Sleep(force_delay_ms);
             log_info("launcher", "force restart");
             restart_spawn();
             launcher::kill(0);

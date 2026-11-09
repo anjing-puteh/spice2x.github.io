@@ -766,6 +766,7 @@ set(SOURCE_FILES ${SOURCE_FILES}
         util/netutils.cpp
         util/precise_timer.cpp
         util/sysutils.cpp
+        util/touchremap.cpp
         util/lz77.cpp
         util/tapeled.cpp
         util/execexe.cpp
