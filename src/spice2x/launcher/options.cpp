@@ -1833,7 +1833,7 @@ static const std::vector<OptionDefinition> OPTION_DEFINITIONS = std::invoke([]()
         .desc = "Path to a .reg file containing the touch mapping to use while the game runs. "
                 "To create it: run \"MultiDigiMon -touch\" and finish the wizard so the touch monitor "
                 "registers on the main monitor, then run in a command prompt:\n"
-                "reg export \"HKCU\\Software\\Microsoft\\Wisp\\Pen\\Digimon\" game.reg /y\n\n"
+                "reg export \"HKLM\\Software\\Microsoft\\Wisp\\Pen\\Digimon\" game.reg /y\n\n"
                 "The mapping is specific to this PC and this touch screen.",
         .type = OptionType::Text,
         .setting_name = "C:\\path\\to\\game.reg",
