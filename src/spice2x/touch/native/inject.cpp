@@ -12,6 +12,7 @@
 #include "transform.h"
 
 #include "hooks/graphics/graphics.h"
+#include "touch/touch2main.h"
 #include "util/detour.h"
 #include "util/libutils.h"
 #include "util/logging.h"
@@ -488,8 +489,11 @@ namespace nativetouch::inject {
                 return;
             }
 
-            // reserve one synthetic contact and disable Windows' visual touch feedback
-            if (!InitializeTouchInjection_ptr(1, TOUCH_FEEDBACK_NONE)) {
+            // reserve one synthetic contact (plus touch2main's contacts when it is enabled,
+            // since injection is initialized once per process) and disable Windows' visual
+            // touch feedback
+            if (!InitializeTouchInjection_ptr(
+                    touch2main::injection_contact_count(), TOUCH_FEEDBACK_NONE)) {
                 log_warning(
                     "touch::native", "failed to initialize mouse touch injection: {}", GetLastError());
                 clear_touch_injection_functions();

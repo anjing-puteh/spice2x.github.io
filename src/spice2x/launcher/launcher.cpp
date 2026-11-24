@@ -116,6 +116,7 @@
 #include "sdk/sdk.h"
 #include "stubs/stubs.h"
 #include "touch/touch.h"
+#include "touch/touch2main.h"
 #include "util/cpuutils.h"
 #include "util/crypt.h"
 #include "util/deferlog.h"
@@ -1144,6 +1145,10 @@ int main_implementation(int argc, char *argv[]) {
             rawinput::touch::ASPECT_COMPENSATION_MODE = rawinput::touch::AspectMode::Off;
         }
         // "auto" leaves the default (per-game)
+    }
+    if (options[launcher::Options::Touch2Main].value_bool() && !cfg::CONFIGURATOR_STANDALONE) {
+        touch2main::ENABLED = true;
+        touch2main::start();
     }
     // DisableTouchCardInsert is no longer honored in spice2x
     // if (options[launcher::Options::DisableTouchCardInsert].value_bool()) {

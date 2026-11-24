@@ -186,6 +186,7 @@ namespace launcher {
             ForceTouchEmulation,
             InvertTouchCoordinates,
             RawInputTouchAspectRatio,
+            Touch2Main,
             DisableTouchCardInsert,
             spice2x_TouchCardInsert,
             ICCAReaderPort,

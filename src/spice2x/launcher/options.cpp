@@ -1813,6 +1813,22 @@ static const std::vector<OptionDefinition> OPTION_DEFINITIONS = std::invoke([]()
             {"off", ""},
         },
     };
+    c[launcher::Options::Touch2Main] = {
+        .title = "Redirect Touchscreen to Main Display",
+        .name = "touch2main",
+        .desc = "For games with a touch subscreen (e.g. IIDX, SDVX, pop'n music) when the "
+                "touch screen is a second monitor. While the game runs, an invisible window "
+                "covers the touch screen and sends its touches to the main (primary) display, "
+                "where the game expects them.\n\n"
+                "Use this instead of mapping the touch screen to the main display in Windows "
+                "Tablet PC Settings. Windows settings are not changed, so the touch screen "
+                "works as normal again after the game closes.\n\n"
+                "While active, the touch screen cannot be used by other programs. The touch "
+                "screen is the first monitor that is not the primary display. Pauses while a "
+                "game subscreen window is on the touch screen. Requires Windows 8 or newer.",
+        .type = OptionType::Bool,
+        .category = "Touch Parameters",
+    };
     c[launcher::Options::DisableTouchCardInsert] = {
         .title = "Disable Touch Card Insert (DEPRECATED - use -touchcard instead)",
         .name = "touchnocard",

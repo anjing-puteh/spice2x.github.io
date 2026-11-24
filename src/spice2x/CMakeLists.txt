@@ -743,6 +743,7 @@ set(SOURCE_FILES ${SOURCE_FILES}
         touch/native/nativetouchhook.cpp
         touch/native/transform.cpp
         touch/touch.cpp
+        touch/touch2main.cpp
         touch/touch_gestures.cpp
         touch/win7.cpp
         touch/win8.cpp
